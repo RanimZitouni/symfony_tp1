@@ -11,8 +11,25 @@ final class ArticlesController extends AbstractController
     #[Route('/articles', name: 'app_articles')]
     public function index(): Response
     {
-        return $this->render('articles/index.html.twig', [
-            'controller_name' => 'ArticlesController',
-        ]);
-    }
+    $articles = $articleRepository->findAll();
+
+    return $this->render('articles/index.html.twig', [
+        'articles' => $articles,
+    ]);
+}
+    #[Route('/articles/nouveau', name: 'app_article_nouveau')]
+public function nouveau(EntityManagerInterface $em): Response
+{
+    $article = new Article();
+    $article->setTitre('Mon premier article');
+    $article->setContenu('Ceci est le contenu de mon premier article créé avec Doctrine.');
+    $article->setAuteur('Étudiant');
+    $article->setDateCreation(new \DateTime());
+    $article->setPublie(true);
+
+    $em->persist($article);
+    $em->flush();
+
+    return new Response("Article créé avec l'id : " . $article->getId());
+}
 }
