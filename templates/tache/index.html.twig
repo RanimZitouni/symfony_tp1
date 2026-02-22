@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Tâches{% endblock %}
+
+{% block body %}
+<h1>Liste des Tâches</h1>
+<ul>
+    {% for tache in taches %}
+        <li>
+            <a href="{{ path('app_tache_show', {'id': tache.id}) }}">{{ tache.titre }}</a>
+            {% if tache.terminee %}
+                <span style="text-decoration: line-through;">(Terminée)</span>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
